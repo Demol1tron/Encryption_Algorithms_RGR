@@ -1,0 +1,65 @@
+#include "file_utils.h"
+#include <fstream>
+#include <iostream>
+#include <system_error>
+
+#ifdef _WIN32
+    #include <direct.h>
+    #include <windows.h>
+    #define CREATE_DIR(path) _mkdir(path.c_str())
+#else
+    #include <sys/stat.h>
+    #include <unistd.h>
+    #define CREATE_DIR(path) mkdir(path.c_str(), 0755)
+#endif
+
+std::vector<uint8_t> ReadFile(const std::string &filePath)
+{
+    std::ifstream file(filePath, std::ios::binary);
+    if (!file)
+        throw std::runtime_error("Нельзя открыть файл: " + filePath);
+    
+    file.seekg(0, std::ios::end);
+    size_t fileSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+    
+    std::vector<uint8_t> buffer(fileSize);
+    file.read(reinterpret_cast<char*>(buffer.data()), fileSize);
+    
+    return buffer;
+}
+
+bool WriteFile(const std::string &filePath, const std::vector<unsigned char> &data)
+{
+    try {
+        std::ofstream file(filePath, std::ios::binary);
+        if (!file)
+            return false;
+
+        file.write(reinterpret_cast<const char*>(data.data()), data.size());
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileExists(const std::string &filePath)
+{
+    std::ifstream file(filePath);
+    return file.good();
+}
+
+bool CreateDirectoryIfNeeded(const std::string &filePath)
+{
+    size_t pos = filePath.find_last_of("/\\");
+    if (pos == std::string::npos)
+        return true; // нет директории в пути
+    
+    std::string directory = filePath.substr(0, pos);
+    if (directory.empty())
+        return true;
+    
+    // создаем директорию
+    int result = CREATE_DIR(directory);
+    return result == 0 || errno == EEXIST;
+}

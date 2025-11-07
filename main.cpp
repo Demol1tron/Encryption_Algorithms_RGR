@@ -1,6 +1,6 @@
 #include <iostream>
-#include <functional>
 #include <random>
+#include "funcs.h"
 
 #ifdef _WIN32
     #include <windows.h>
@@ -8,35 +8,16 @@
     #include <dlfcn.h>
 #endif
 
-#include "./ciphers/api.h"
-#include "./utils/file_utils.h"
-
-// для загруженного шифра
-struct CipherPlugin {
-    void* libraryHandle;
-    std::function<const char*()> GetCipherName;
-    std::function<bool(const uint8_t*)> ValidateKey;
-    std::function<void(const uint8_t*, uint8_t*, size_t, const uint8_t*)> EncryptData;
-    std::function<void(const uint8_t*, uint8_t*, size_t, const uint8_t*)> DecryptData;
-};
 std::vector<CipherPlugin> loadedCiphers;
-
-bool LoadCipher(const std::string &libraryPath);
-void UnloadAllCiphers();
-void ShowMainMenu();
-void ProcessTextEncryption();
-void ProcessFileEncryption();
-void ShowKeyGenerator();
 
 int main()
 {
-
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
-    LoadCipher("./dll/atbash.dll");
-    LoadCipher("./dll/hill.dll");
-    LoadCipher("./dll/permutation.dll");
+    LoadCipher("./dlls/atbash.dll");
+    LoadCipher("./dlls/hill.dll");
+    LoadCipher("./dlls/permutation.dll");
 
 #else
     LoadCipher("./libs/atbash.so");

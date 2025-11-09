@@ -10,8 +10,7 @@ const char* GetCipherName()
 
 bool ValidateKey(const uint8_t *key)
 {
-    // ключ = 4 числа через запятую "a,b,c,d" для матрицы [[a,b],[c,d]]
-    // "1,2,3,4" -> матрица [[1,2],[3,4]]
+    // ключ = 4 числа через запятую "1, 2, 3, 5" -> [[1,2],[3,5]]
     
     std::string keyStr(reinterpret_cast<const char*>(key));
     std::stringstream ss(keyStr);
@@ -27,7 +26,6 @@ bool ValidateKey(const uint8_t *key)
         }
     }
     
-    // должно быть ровно 4 числа
     if (numbers.size() != 4)
         return false;
     
@@ -58,8 +56,8 @@ void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
         int x2 = inputData[i + 1];
         
         // матричное умножение: [y1, y2] = [x1, x2] * [[a, b],[c, d]]
-        int y1 = (a * x1 + c * x2) % 256;
-        int y2 = (b * x1 + d * x2) % 256;
+        int y1 = (a * x1 + b * x2) % 256;
+        int y2 = (c * x1 + d * x2) % 256;
         
         outputData[i] = static_cast<uint8_t>(y1);
         outputData[i + 1] = static_cast<uint8_t>(y2);
@@ -100,16 +98,20 @@ void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
         return;
     }
     
-    // обратная матрица: [[d, -b], [-c, a]] * det_inv
+    // обратная матрица: [[d, -b], [-c, a]] * detInv
     int aInv = (d * detInv) % 256;
     int bInv = (-b * detInv) % 256;
     int cInv = (-c * detInv) % 256;
     int dInv = (a * detInv) % 256;
     
+    if (aInv <0)
+        aInv += 256;
     if (bInv < 0)
         bInv += 256;
     if (cInv < 0)
         cInv += 256;
+    if (dInv < 0)
+        dInv += 256;
     
     // дешифруем блоками по 2 байта
     for (size_t i = 0; i + 1 < dataSize; i += 2) {
@@ -117,8 +119,8 @@ void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
         int y2 = inputData[i + 1];
         
         // умножение на обратную матрицу
-        int x1 = (aInv * y1 + cInv * y2) % 256;
-        int x2 = (bInv * y1 + dInv * y2) % 256;
+        int x1 = (aInv * y1 + bInv * y2) % 256;
+        int x2 = (cInv * y1 + dInv * y2) % 256;
         
         outputData[i] = static_cast<uint8_t>(x1);
         outputData[i + 1] = static_cast<uint8_t>(x2);

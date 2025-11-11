@@ -5,7 +5,7 @@
 
 const char* GetCipherName()
 {
-    return "Шифровка фиксированной перестановкой";
+    return "Шифровка зафиксированной перестановкой (k переменной длины)";
 }
 
 bool ValidateKey(const std::string &key)

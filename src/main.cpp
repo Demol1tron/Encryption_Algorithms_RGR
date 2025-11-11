@@ -15,12 +15,12 @@ int main()
     SetConsoleCP(CP_UTF8);
     LoadCipher("./dlls/atbash.dll");
     LoadCipher("./dlls/hill.dll");
-    LoadCipher("./dlls/permutation.dll");
+    LoadCipher("./dlls/permutations.dll");
 
 #else
     LoadCipher("./libs/atbash.so");
     LoadCipher("./libs/hill.so");
-    LoadCipher("./libs/permutation.so");
+    LoadCipher("./libs/permutations.so");
 #endif
 
     bool running = true;

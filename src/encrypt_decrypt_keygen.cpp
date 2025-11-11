@@ -207,7 +207,7 @@ void ShowKeyGenerator()
             std::string key = std::to_string(a) + "," + std::to_string(b) + "," +
                             std::to_string(c) + "," + std::to_string(d);
             
-            std::cout << "Сгенерированный ключ для Хилла: " << key << std::endl;
+            std::cout << "Сгенерированный ключ для шифра Хилла: " << key << std::endl;
             std::cout << "Матрица: [[" << a << "," << b << "], [" << c << "," << d << "]]" << std::endl;
             std::cout << "Определитель: " << (a * d - b * c) << " (нечетный)" << std::endl;
             break;
@@ -224,7 +224,7 @@ void ShowKeyGenerator()
             
             std::string key = std::to_string(numbers[0]) + "," + std::to_string(numbers[1]) + 
                             "," + std::to_string(numbers[2]) + "," + std::to_string(numbers[3]);
-            std::cout << "Сгенерированный ключ для Перестановки: " << key << std::endl;
+            std::cout << "Сгенерированный ключ для перестановки: " << key << std::endl;
             std::cout << "Перестановка: [1,2,3,4] -> [" << numbers[0] << "," 
                       << numbers[1] << "," << numbers[2] << "," << numbers[3] << "]" << std::endl;
             break;

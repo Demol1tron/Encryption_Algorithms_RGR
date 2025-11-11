@@ -1,4 +1,4 @@
-# Encryption_Algorithms_RGR
+# Encryption_Algorithm_RGR
 
 Расчетно-графическая работа.
 

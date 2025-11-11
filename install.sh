@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Установка Encryption_Algorithm_RGR..."
+echo "Установка Encryption_Algorithm_RGR >>>"
 
 DESKTOP_DIR=$(xdg-user-dir DESKTOP)
 APP_NAME="Encryption_Algorithm_RGR"
@@ -13,13 +13,13 @@ LIBS_DIR="$INSTALL_DIR/libs"
 REQUIRED_FILES=("src/main.cpp" "src/cipher_manager.cpp" "src/encrypt_decrypt_keygen.cpp" "ciphers/atbash.cpp" "ciphers/hill.cpp" "ciphers/permutations.cpp" "utils/file_utils.cpp")
 for file in "${REQUIRED_FILES[@]}"; do
     if [ ! -f "$file" ]; then
-        echo "Ошибка: файл '$file' не найден."
+        echo "Ошибка >> файл '$file' не найден."
         exit 1
     fi
 done
 
 if ! command -v g++ &> /dev/null; then
-    echo "Ошибка: компилятор g++ не найден."
+    echo "Ошибка >> компилятор g++ не найден."
     exit 1
 fi
 
@@ -29,21 +29,20 @@ rm -f "$DESKTOP_FILE"
 mkdir -p "$INSTALL_DIR"
 mkdir -p "$LIBS_DIR"
 
-echo "Компиляция библиотек..."
-echo "1) Атбаш..."
+echo "Компиляция библиотек >>>"
+echo "1) Атбаш"
 g++ -shared -fPIC -o "$LIBS_DIR/atbash.so" ciphers/atbash.cpp
 
-echo "2) Шифр Хилла..."
+echo "2) Шифр Хилла"
 g++ -shared -fPIC -o "$LIBS_DIR/hill.so" ciphers/hill.cpp
 
-echo "3) Шифр фиксированной перестановки..."
+echo "3) Шифр фиксированной перестановки"
 g++ -shared -fPIC -o "$LIBS_DIR/permutations.so" ciphers/permutations.cpp
 
-echo "Компиляция программы..."
+echo "Компиляция программы >>>"
 g++ -o "$INSTALL_DIR/Encryption_Algorithm_RGR" src/main.cpp src/cipher_manager.cpp src/encrypt_decrypt_keygen.cpp utils/file_utils.cpp
 
 cat > "$INSTALL_DIR/README.txt" <<'EOF'
-
 Encryption_Algorithm_RGR - программа для шифрования и дешифрования текстов 
 и файлов с использованием трех алгоритмов:
 
@@ -64,7 +63,7 @@ Encryption_Algorithm_RGR - программа для шифрования и д�
 Запуск программы происходит через ярлык на рабочем столе.
 EOF
 
-echo "Создание ярлыка на рабочем столе..."
+echo "Создание ярлыка на рабочем столе >>>"
 cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Version=1.0

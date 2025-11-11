@@ -27,7 +27,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo Encryption App > "%APP_DIR%\README.txt"
+echo Encryption_Algorithm_RGR > "%APP_DIR%\README.txt"
 echo. >> "%APP_DIR%\README.txt"
 echo Algorithms: >> "%APP_DIR%\README.txt"
 echo 1. Atbash - no key >> "%APP_DIR%\README.txt"

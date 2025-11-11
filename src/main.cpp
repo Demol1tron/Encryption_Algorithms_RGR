@@ -25,13 +25,14 @@ int main()
 
     bool running = true;
     while (running) {
-        std::cout << "\n*********************************" << std::endl;
+        std::cout << "\n#################################" << std::endl;
         std::cout << "1. Шифрование/дешифрование текста" << std::endl;
         std::cout << "2. Шифрование/дешифрование файла" << std::endl;
         std::cout << "3. Генератор ключей" << std::endl;
         std::cout << "0. Выход" << std::endl;
-        std::cout << "Выберите действие: ";
-        
+        std::cout << "#################################" << std::endl;
+        std::cout << ">> ";
+
         int choice;
         std::cin >> choice;
         std::cin.ignore();
@@ -51,7 +52,7 @@ int main()
                 running = false;
                 break;
             default:
-                std::cout << "Неверный выбор!" << std::endl;
+                std::cout << "Неверный выбор операции!" << std::endl;
         }
     }
 

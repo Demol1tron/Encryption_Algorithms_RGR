@@ -14,7 +14,7 @@ bool LoadCipher(const std::string &libraryPath)
 #ifdef _WIN32
     HMODULE library = LoadLibraryA(libraryPath.c_str());
     if (!library) {
-        std::cout << "Ошибка загрузки библиотеки: " << libraryPath << std::endl;
+        std::cout << "Ошибка загрузки библиотеки >> " << libraryPath << std::endl;
         return false;
     }
     
@@ -25,7 +25,7 @@ bool LoadCipher(const std::string &libraryPath)
 #else
     void *library = dlopen(libraryPath.c_str(), RTLD_LAZY);
     if (!library) {
-        std::cout << "Ошибка загрузки библиотеки: " << dlerror() << std::endl;
+        std::cout << "Ошибка загрузки библиотеки >> " << dlerror() << std::endl;
         return false;
     }
     
@@ -36,7 +36,7 @@ bool LoadCipher(const std::string &libraryPath)
 #endif
 
     if (!getName || !validateKey || !encrypt || !decrypt) {
-        std::cout << "Библиотека не содержит все необходимые функции" << std::endl;
+        std::cout << "Библиотека не содержит все необходимые функции!" << std::endl;
 #ifdef _WIN32
         FreeLibrary(library);
 #else

@@ -6,52 +6,52 @@
 void ProcessTextEncryption()
 {
     if (loadedCiphers.empty()) {
-        std::cout << "Нет загруженных шифров!" << std::endl;
+        std::cout << "Отсутствуют загруженные алгоритмы!" << std::endl;
         return;
     }
 
-    std::cout << "\n***Доступные шифры***" << std::endl;
+    std::cout << "\n<< ДОСТУПНЫЕ АЛГОРИТМЫ >>" << std::endl;
     for (size_t i = 0; i < loadedCiphers.size(); ++i)
         std::cout << i + 1 << ". " << loadedCiphers[i].GetCipherName() << std::endl;
 
-    std::cout << "Выберите шифр: ";
+    std::cout << ">> ";
     
     int cipherChoice;
     std::cin >> cipherChoice;
     std::cin.ignore();
     
     if (cipherChoice < 1 || cipherChoice > loadedCiphers.size()) {
-        std::cout << "Неверный выбор шифра!" << std::endl;
+        std::cout << "Неверный выбор алгоритма!" << std::endl;
         return;
     }
     
     CipherPlugin &cipher = loadedCiphers[cipherChoice - 1];
 
-    std::cout << "\nВыбор операции:" << std::endl;
-    std::cout << "1. Шифрование" << std::endl;
-    std::cout << "2. Дешифрование" << std::endl;
-    std::cout << "Выберите операцию: ";
+    std::cout << "\n<< ВЫБОР ПРЕОБРАЗОВАНИЯ >>" << std::endl;
+    std::cout << "1. Шифровать" << std::endl;
+    std::cout << "2. Дешифровать" << std::endl;
+    std::cout << ">> ";
     
     int operation;
     std::cin >> operation;
     std::cin.ignore();
     
     if (operation != 1 && operation != 2) {
-        std::cout << "Неверный выбор операции!" << std::endl;
+        std::cout << "Неверный выбор преобразования!" << std::endl;
         return;
     }
 
-    std::cout << "Введите ключ: ";
+    std::cout << "Ключ >> ";
     std::string keyStr;
     std::getline(std::cin, keyStr);
     
     // прямая работа с ключом без конвертации
     if (!cipher.ValidateKey(keyStr)) {
-        std::cout << "Неверный ключ для выбранного шифра!" << std::endl;
+        std::cout << "Неверный ключ для выбранного алгоритма!" << std::endl;
         return;
     }
 
-    std::cout << "Введите текст: ";
+    std::cout << "Ввод текста >> ";
     std::string text;
     std::getline(std::cin, text);
     
@@ -62,11 +62,11 @@ void ProcessTextEncryption()
     if (operation == 1) {
         cipher.EncryptData(reinterpret_cast<const uint8_t*>(text.data()), output.data(),
                             text.size(), keyStr);
-        std::cout << "Зашифрованный текст: ";
+        std::cout << "Зашифрованный текст >> ";
     } else {
         cipher.DecryptData(reinterpret_cast<const uint8_t*>(text.data()), output.data(),
                             text.size(), keyStr);
-        std::cout << "Расшифрованный текст: ";
+        std::cout << "Расшифрованный текст >> ";
     }
     
     // вывод в байтах
@@ -79,47 +79,47 @@ void ProcessTextEncryption()
 void ProcessFileEncryption()
 {
     if (loadedCiphers.empty()) {
-        std::cout << "Нет загруженных шифров!" << std::endl;
+        std::cout << "Отсутствуют загруженные алгоритмы!" << std::endl;
         return;
     }
 
-    std::cout << "\n***Доступные шифры***" << std::endl;
+    std::cout << "\n<< ДОСТУПНЫЕ АЛГОРИТМЫ >>" << std::endl;
     for (size_t i = 0; i < loadedCiphers.size(); ++i)
         std::cout << i + 1 << ". " << loadedCiphers[i].GetCipherName() << std::endl;
 
-    std::cout << "Выберите шифр: ";
+    std::cout << ">> ";
     
     int cipherChoice;
     std::cin >> cipherChoice;
     std::cin.ignore();
     
     if (cipherChoice < 1 || cipherChoice > loadedCiphers.size()) {
-        std::cout << "Неверный выбор шифра!" << std::endl;
+        std::cout << "Неверный выбор алгоритма!" << std::endl;
         return;
     }
     
     CipherPlugin &cipher = loadedCiphers[cipherChoice - 1];
 
-    std::cout << "\nВыбор операции:" << std::endl;
-    std::cout << "1. Шифрование" << std::endl;
-    std::cout << "2. Дешифрование" << std::endl;
-    std::cout << "Выберите операцию: ";
+    std::cout << "\n<< ВЫБОР ПРЕОБРАЗОВАНИЯ >>" << std::endl;
+    std::cout << "1. Шифровать" << std::endl;
+    std::cout << "2. Дешифровать" << std::endl;
+    std::cout << ">> ";
     
     int operation;
     std::cin >> operation;
     std::cin.ignore();
     
     if (operation != 1 && operation != 2) {
-        std::cout << "Неверный выбор операции!" << std::endl;
+        std::cout << "Неверный выбор преобразования!" << std::endl;
         return;
     }
 
-    std::cout << "Введите ключ: ";
+    std::cout << "Ключ >> ";
     std::string keyStr;
     std::getline(std::cin, keyStr);
     
     if (!cipher.ValidateKey(keyStr)) {
-        std::cout << "Неверный ключ для выбранного шифра!" << std::endl;
+        std::cout << "Неверный ключ для выбранного алгоритма!" << std::endl;
         return;
     }
 
@@ -127,14 +127,14 @@ void ProcessFileEncryption()
     std::string inputPath;
     bool validInputFile = false;
     while (!validInputFile) {
-        std::cout << "Введите путь к исходному файлу: ";
+        std::cout << "Путь к исходному файлу >> ";
         std::getline(std::cin, inputPath);
         
         if (!FileExists(inputPath)) {
-            std::cout << "Ошибка: файл '" << inputPath << "' не существует!" << std::endl;
+            std::cout << "Ошибка >> файл '" << inputPath << "' не существует!" << std::endl;
             std::cout << "1. Повторить ввод" << std::endl;
             std::cout << "2. Отменить операцию" << std::endl;
-            std::cout << "Выбор: ";
+            std::cout << ">> ";
             
             int retryChoice;
             std::cin >> retryChoice;
@@ -154,15 +154,15 @@ void ProcessFileEncryption()
     bool validOutputFile = false;
     
     while (!validOutputFile) {
-        std::cout << "Введите путь для выходного файла: ";
+        std::cout << "Путь к выходному файлу >> ";
         std::getline(std::cin, outputPath);
         
         if (FileExists(outputPath)) {
-            std::cout << "\nВнимание: файл '" << outputPath << "' уже существует!" << std::endl;
+            std::cout << "\nВнимание >> файл '" << outputPath << "' уже существует!" << std::endl;
             std::cout << "1. Перезаписать файл" << std::endl;
             std::cout << "2. Ввести новый путь" << std::endl;
             std::cout << "3. Отменить операцию" << std::endl;
-            std::cout << "Выбор: ";
+            std::cout << ">> ";
             
             int overwriteChoice;
             std::cin >> overwriteChoice;
@@ -205,28 +205,28 @@ void ProcessFileEncryption()
         
         // запись
         if (WriteFile(outputPath, outputData))
-            std::cout << "Результат сохранен в: " << outputPath << std::endl;
+            std::cout << "Результат сохранен в >> " << outputPath << std::endl;
         else
             std::cout << "Ошибка сохранения файла!" << std::endl;
         
     } catch (const std::runtime_error &e) {
-        std::cout << "Ошибка чтения файла: " << e.what() << std::endl;
+        std::cout << "Ошибка чтения файла >> " << e.what() << std::endl;
     } catch (const std::exception &e) {
-        std::cout << "Неожиданная ошибка: " << e.what() << std::endl;
+        std::cout << "Неожиданная ошибка >> " << e.what() << std::endl;
     }
 }
 
 void ShowKeyGenerator()
 {
     if (loadedCiphers.empty()) {
-        std::cout << "Нет загруженных шифров!" << std::endl;
+        std::cout << "Отсутствуют загруженные алгоритмы!" << std::endl;
         return;
     }
 
-    std::cout << "\n***Генератор ключей***" << std::endl;
+    std::cout << "\n<< ГЕНЕРАТОР КЛЮЧЕЙ >>" << std::endl;
     for (size_t i = 0; i < loadedCiphers.size(); ++i)
         std::cout << i + 1 << ". " << loadedCiphers[i].GetCipherName() << std::endl;
-    std::cout << "Выберите шифр для генерации ключа: ";
+    std::cout << "Генерация ключа для алгоритма >> ";
     
     int choice;
     std::cin >> choice;
@@ -241,7 +241,7 @@ void ShowKeyGenerator()
     switch (choice)
     {
         case 1:
-            std::cout << "Атбаш не использует ключ, можно ввести любой текст, например: hello, world!" << std::endl;
+            std::cout << "Атбаш не использует ключ. Можно ввести любой текст, например >> привет, мир!" << std::endl;
             break;
         case 2: {
             // случайная матрица с неч det
@@ -264,9 +264,9 @@ void ShowKeyGenerator()
             std::string key = std::to_string(a) + "," + std::to_string(b) + "," +
                             std::to_string(c) + "," + std::to_string(d);
             
-            std::cout << "Сгенерированный ключ для шифра Хилла: " << key << std::endl;
-            std::cout << "Матрица: [[" << a << "," << b << "], [" << c << "," << d << "]]" << std::endl;
-            std::cout << "Определитель: " << (a * d - b * c) << " (нечетный)" << std::endl;
+            std::cout << "Сгенерированный ключ для шифра Хилла >> " << key << std::endl;
+            std::cout << "Матрица >> [[" << a << "," << b << "], [" << c << "," << d << "]]" << std::endl;
+            std::cout << "Определитель >> " << (a * d - b * c) << " (нечетный)" << std::endl;
             break;
         }
         case 3: {
@@ -281,8 +281,8 @@ void ShowKeyGenerator()
             
             std::string key = std::to_string(numbers[0]) + "," + std::to_string(numbers[1]) + 
                             "," + std::to_string(numbers[2]) + "," + std::to_string(numbers[3]);
-            std::cout << "Сгенерированный ключ для перестановки: " << key << std::endl;
-            std::cout << "Перестановка: [1,2,3,4] -> [" << numbers[0] << "," 
+            std::cout << "Сгенерированный ключ для перестановки >> " << key << std::endl;
+            std::cout << "Перестановка >> [1,2,3,4] -> [" << numbers[0] << "," 
                       << numbers[1] << "," << numbers[2] << "," << numbers[3] << "]" << std::endl;
             break;
         }
@@ -290,7 +290,7 @@ void ShowKeyGenerator()
             std::cout << "Неверный выбор!" << std::endl;
     }
 
-    std::cout << "\nНажмите Enter для продолжения...";
+    std::cout << "\nНажмите Enter для продолжения >>> ";
     // std::cin.ignore(32767, '\n');
     std::cin.get();
 }

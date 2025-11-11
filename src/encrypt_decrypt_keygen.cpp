@@ -124,13 +124,69 @@ void ProcessFileEncryption()
     }
 
     // ввод путей к файлам
-    std::cout << "Введите путь к исходному файлу: ";
     std::string inputPath;
-    std::getline(std::cin, inputPath);
-    
-    std::cout << "Введите путь для выходного файла: ";
+    bool validInputFile = false;
+    while (!validInputFile) {
+        std::cout << "Введите путь к исходному файлу: ";
+        std::getline(std::cin, inputPath);
+        
+        if (!FileExists(inputPath)) {
+            std::cout << "Ошибка: файл '" << inputPath << "' не существует!" << std::endl;
+            std::cout << "1. Повторить ввод" << std::endl;
+            std::cout << "2. Отменить операцию" << std::endl;
+            std::cout << "Выбор: ";
+            
+            int retryChoice;
+            std::cin >> retryChoice;
+            std::cin.ignore();
+            std::cout << std::endl;
+            
+            if (retryChoice == 2) {
+                std::cout << "Операция отменена." << std::endl;
+                return;
+            }
+        } else
+            validInputFile = true;
+    }
+
+    // ввод и проверка выходного файла
     std::string outputPath;
-    std::getline(std::cin, outputPath);
+    bool validOutputFile = false;
+    
+    while (!validOutputFile) {
+        std::cout << "Введите путь для выходного файла: ";
+        std::getline(std::cin, outputPath);
+        
+        if (FileExists(outputPath)) {
+            std::cout << "\nВнимание: файл '" << outputPath << "' уже существует!" << std::endl;
+            std::cout << "1. Перезаписать файл" << std::endl;
+            std::cout << "2. Ввести новый путь" << std::endl;
+            std::cout << "3. Отменить операцию" << std::endl;
+            std::cout << "Выбор: ";
+            
+            int overwriteChoice;
+            std::cin >> overwriteChoice;
+            std::cin.ignore();
+            std::cout << std::endl;
+            
+            switch (overwriteChoice)
+            {
+                case 1:
+                    std::cout << "Файл будет перезаписан." << std::endl;
+                    validOutputFile = true;
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    std::cout << "Операция отменена." << std::endl;
+                    return;
+                default:
+                    std::cout << "Неверный выбор! Попробуйте снова." << std::endl;
+                    break;
+            }
+        } else
+            validOutputFile = true;
+    }
 
     try {
         // чтение
@@ -153,8 +209,10 @@ void ProcessFileEncryption()
         else
             std::cout << "Ошибка сохранения файла!" << std::endl;
         
+    } catch (const std::runtime_error &e) {
+        std::cout << "Ошибка чтения файла: " << e.what() << std::endl;
     } catch (const std::exception &e) {
-        std::cout << "Ошибка: " << e.what() << std::endl;
+        std::cout << "Неожиданная ошибка: " << e.what() << std::endl;
     }
 }
 
@@ -174,7 +232,6 @@ void ShowKeyGenerator()
     std::cin >> choice;
     std::cin.ignore();
     
-    // Инициализируем генератор случайных чисел
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -184,7 +241,7 @@ void ShowKeyGenerator()
     switch (choice)
     {
         case 1:
-            std::cout << "Атбаш не использует ключ, можно ввести любой текст" << std::endl;
+            std::cout << "Атбаш не использует ключ, можно ввести любой текст, например: hello, world!" << std::endl;
             break;
         case 2: {
             // случайная матрица с неч det
@@ -232,7 +289,8 @@ void ShowKeyGenerator()
         default:
             std::cout << "Неверный выбор!" << std::endl;
     }
-    
+
     std::cout << "\nНажмите Enter для продолжения...";
+    // std::cin.ignore(32767, '\n');
     std::cin.get();
 }

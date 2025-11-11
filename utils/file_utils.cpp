@@ -32,6 +32,7 @@ std::vector<uint8_t> ReadFile(const std::string &filePath)
 bool WriteFile(const std::string &filePath, const std::vector<unsigned char> &data)
 {
     try {
+        CreateDirectoryIfNeeded(filePath);
         std::ofstream file(filePath, std::ios::binary);
         if (!file)
             return false;
@@ -59,7 +60,12 @@ bool CreateDirectoryIfNeeded(const std::string &filePath)
     if (directory.empty())
         return true;
     
-    // создаем директорию
-    int result = CREATE_DIR(directory);
-    return result == 0 || errno == EEXIST;
+    #ifdef _WIN32
+        // Windows - создаем все папки рекурсивно
+        return _mkdir(directory.c_str()) == 0 || errno == EEXIST;
+    #else
+        // Linux - используем system для создания всей цепочки
+        std::string command = "mkdir -p \"" + directory + "\"";
+        return system(command.c_str()) == 0;
+    #endif
 }

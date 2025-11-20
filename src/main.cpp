@@ -33,25 +33,29 @@ int main()
         std::cout << "#################################" << std::endl;
         std::cout << ">> ";
 
-        int choice;
+        char choice;
         std::cin >> choice;
-        std::cin.ignore();
         switch (choice)
         {
-            case 1:
+            case '1':
+                std::cin.ignore(32767, '\n');
                 ProcessTextEncryption();
                 break;
-            case 2:
+            case '2':
+                std::cin.ignore(32767, '\n');
                 ProcessFileEncryption();
                 break;
-            case 3:
+            case '3':
+                std::cin.ignore(32767, '\n');
                 ShowKeyGenerator();
                 break;
-            case 0:
+            case '0':
                 running = false;
                 break;
             default:
                 std::cout << "Неверный выбор! Попробуйте снова." << std::endl;
+                std::cin.ignore(32767, '\n');
+
         }
     }
     UnloadAllCiphers();

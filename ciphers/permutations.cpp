@@ -68,7 +68,6 @@ void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
         // блок пробелов
         std::vector<uint8_t> block(blockSize, ' ');
         
-        // заполняем данными
         int currentBlockSize = std::min(static_cast<int>(dataSize - blockStart), blockSize);
         for (int i = 0; i < currentBlockSize; ++i)
             block[i] = inputData[blockStart + i];

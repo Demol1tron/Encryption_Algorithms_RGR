@@ -20,5 +20,5 @@ void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
 void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
                 const std::string &key)
 {
-    EncryptData(inputData, outputData, dataSize, key); // шифрование и дешифрование одинаковы
+    EncryptData(inputData, outputData, dataSize, key);
 }

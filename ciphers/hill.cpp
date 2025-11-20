@@ -9,7 +9,6 @@ const char* GetCipherName()
 
 bool ValidateKey(const std::string &key)
 {
-    // ключ = 4 числа через запятую "1, 2, 3, 5" -> [[1,2],[3,5]]
     std::stringstream ss(key);
     std::vector<int> numbers;
     std::string token;
@@ -25,8 +24,6 @@ bool ValidateKey(const std::string &key)
     if (numbers.size() != 4)
         return false;
     
-    // проверяем что определитель нечетный (условие обратимости по mod 256)
-    // det = a * d - b * c
     int det = (numbers[0] * numbers[3] - numbers[1] * numbers[2]) % 256;
     if (det % 2 == 0)
         return false;
@@ -42,14 +39,17 @@ void EncryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
     char comma;
     ss >> a >> comma >> b >> comma >> c >> comma >> d;
     
-    // шифруем блоками по 2 байта
     for (size_t i = 0; i + 1 < dataSize; i += 2) {
         int x1 = inputData[i];
         int x2 = inputData[i + 1];
         
-        // [y1, y2] = [x1, x2] * [[a, b],[c, d]]
         int y1 = (a * x1 + b * x2) % 256;
         int y2 = (c * x1 + d * x2) % 256;
+
+        if (y1 < 0)
+            y1 += 256;
+        if (y2 < 0)
+            y2 += 256;
         
         outputData[i] = static_cast<uint8_t>(y1);
         outputData[i + 1] = static_cast<uint8_t>(y2);
@@ -68,12 +68,10 @@ void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
     char comma;
     ss >> a >> comma >> b >> comma >> c >> comma >> d;
     
-    // вычисляем обратную матрицу
     int det = (a * d - b * c) % 256;
     if (det < 0)
         det += 256;
     
-    // находим обратный определитель
     int detInv = -1;
     for (int i = 1; i < 256; ++i)
         if ((det * i) % 256 == 1) {
@@ -108,9 +106,13 @@ void DecryptData(const uint8_t *inputData, uint8_t *outputData, size_t dataSize,
         int y1 = inputData[i];
         int y2 = inputData[i + 1];
         
-        // умножение на обратную матрицу
         int x1 = (aInv * y1 + bInv * y2) % 256;
         int x2 = (cInv * y1 + dInv * y2) % 256;
+
+        if (x1 < 0)
+            x1 += 256;
+        if (x2 < 0)
+            x2 += 256;
         
         outputData[i] = static_cast<uint8_t>(x1);
         outputData[i + 1] = static_cast<uint8_t>(x2);

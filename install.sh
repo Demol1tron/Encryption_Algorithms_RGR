@@ -10,7 +10,7 @@ INSTALL_DIR="$DESKTOP_DIR/$APP_NAME"
 DESKTOP_FILE="$DESKTOP_DIR/$APP_NAME.desktop"
 LIBS_DIR="$INSTALL_DIR/libs"
 
-REQUIRED_FILES=("src/main.cpp" "src/cipher_manager.cpp" "src/encrypt_decrypt_keygen.cpp" "ciphers/atbash.cpp" "ciphers/hill.cpp" "ciphers/permutations.cpp" "utils/file_utils.cpp")
+REQUIRED_FILES=("src/main.cpp" "src/cipher_manager.cpp" "ciphers/atbash.cpp" "ciphers/hill.cpp" "ciphers/permutations.cpp" "utils/file_utils.cpp")
 for file in "${REQUIRED_FILES[@]}"; do
     if [ ! -f "$file" ]; then
         echo "Ошибка >> файл '$file' не найден."
@@ -40,7 +40,7 @@ echo "3) Шифр фиксированной перестановки"
 g++ -shared -fPIC -o "$LIBS_DIR/permutations.so" ciphers/permutations.cpp
 
 echo "Компиляция программы >>>"
-g++ -o "$INSTALL_DIR/Encryption_Algorithm_RGR" src/main.cpp src/cipher_manager.cpp src/encrypt_decrypt_keygen.cpp utils/file_utils.cpp
+g++ -o "$INSTALL_DIR/Encryption_Algorithm_RGR" src/main.cpp src/cipher_manager.cpp utils/file_utils.cpp
 
 cat > "$INSTALL_DIR/README.txt" <<'EOF'
 Encryption_Algorithm_RGR - программа для шифрования и дешифрования текстов 

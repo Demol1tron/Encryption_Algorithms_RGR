@@ -10,6 +10,8 @@
 
 int main()
 {
+    if (!CheckPassword())
+        return -1;
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
@@ -60,4 +62,26 @@ int main()
     }
     UnloadAllCiphers();
     std::cout << "Выход из программы." << std::endl;
+}
+
+bool CheckPassword()
+{
+    std::string input;
+    int attempts = Security::maxAttempts;
+    
+    while (attempts > 0) {
+        std::cout << "Введите пароль >> ";
+        std::getline(std::cin, input);
+        
+        if (input == Security::password) {
+            std::cout << "Доступ разрешен!\n" << std::endl;
+            return true;
+        } else {
+            attempts--;
+            std::cout << "Неверный пароль. Осталось попыток >> " << attempts << std::endl;
+        }
+    }
+    
+    std::cout << "Доступ запрещен." << std::endl;
+    return false;
 }

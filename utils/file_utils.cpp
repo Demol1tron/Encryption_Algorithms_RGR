@@ -6,11 +6,9 @@
 #ifdef _WIN32
     #include <direct.h>
     #include <windows.h>
-    #define CREATE_DIR(path) _mkdir(path.c_str())
 #else
     #include <sys/stat.h>
     #include <unistd.h>
-    #define CREATE_DIR(path) mkdir(path.c_str(), 0755)
 #endif
 
 std::vector<uint8_t> ReadFile(const std::string &filePath)
@@ -64,7 +62,6 @@ bool CreateDirectoryIfNeeded(const std::string &filePath)
         // создаем все папки рекурсивно
         return _mkdir(directory.c_str()) == 0 || errno == EEXIST;
     #else
-        // используем system для создания всей цепочки
         std::string command = "mkdir -p \"" + directory + "\"";
         return system(command.c_str()) == 0;
     #endif
